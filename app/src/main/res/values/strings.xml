@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TimePlaner</string>
-    <string name="startworking">startworking</string>
-    <string name="_00_00">00:00</string>
+    <string name="startworking">start working</string>
+    <string name="history">history</string>
+    <string name="details">DETAILS</string>
+    <string name="finishworking">finish working</string>
 </resources>
