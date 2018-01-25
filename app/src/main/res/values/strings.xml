@@ -4,4 +4,10 @@
     <string name="history">history</string>
     <string name="details">DETAILS</string>
     <string name="finishworking">finish working</string>
+    <string name="part_time">3/4</string>
+    <string name="time_part">czesc etatu</string>
+    <string name="count">wylicz</string>
+    <string name="work_hours">godzin roboczych:</string>
+    <string name="from">od:</string>
+    <string name="to">do:</string>
 </resources>
