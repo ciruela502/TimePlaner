@@ -2,13 +2,14 @@ package martakonik.timeplaner.ui.timeMeasurement
 
 import android.os.Handler
 import android.os.Message
+import martakonik.timeplaner.database.DatabaseIteractor
 import martakonik.timeplaner.domain.TimeMeasurement
-
+import martakonik.timeplaner.models.WorkDayDateTime
 
 class TimeMeasurementActivityPresenterImpl(private var mTimeMeasurementPresenterView: TimeMeasurementView,
-                                           private val mTimeMeasurement: TimeMeasurement)
+                                           private val mTimeMeasurement: TimeMeasurement,
+                                           private val databaseIteractor: DatabaseIteractor)
     : TimeMeasurementActivityPresenter {
-
     private lateinit var mHandler: WatchHandler
 
     override fun onActivityCreate() {
@@ -24,7 +25,8 @@ class TimeMeasurementActivityPresenterImpl(private var mTimeMeasurementPresenter
 
     override fun onFinishWorkingButtonClick() {
         sendMessageFinish()
-        // todo save time to database
+        var workDayDateTime = WorkDayDateTime(mTimeMeasurement.mWorkDate, mTimeMeasurement.mStartDateTime, mTimeMeasurement.mFinishDateTime)
+        databaseIteractor.saveWorkDayToDatabase(workDayDateTime)
     }
 
     override fun onStop() {

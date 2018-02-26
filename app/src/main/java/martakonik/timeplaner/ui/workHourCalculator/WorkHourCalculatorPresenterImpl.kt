@@ -1,7 +1,7 @@
 package martakonik.timeplaner.ui.workHourCalculator
 
 import android.widget.EditText
-import martakonik.timeplaner.models.MyCalendar
+import martakonik.timeplaner.domain.MyCalendar
 import java.text.SimpleDateFormat
 import java.util.*
 

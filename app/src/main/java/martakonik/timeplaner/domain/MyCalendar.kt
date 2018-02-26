@@ -1,4 +1,4 @@
-package martakonik.timeplaner.models
+package martakonik.timeplaner.domain
 
 import android.util.Log
 import org.threeten.bp.DayOfWeek

@@ -10,4 +10,9 @@
     <string name="work_hours">godzin roboczych:</string>
     <string name="from">od:</string>
     <string name="to">do:</string>
+    <string name="start">START</string>
+    <string name="finish">FINISH</string>
+    <string name="duration">DURATION</string>
+    <string name="date">DATE</string>
+    <string name="show">show</string>
 </resources>
