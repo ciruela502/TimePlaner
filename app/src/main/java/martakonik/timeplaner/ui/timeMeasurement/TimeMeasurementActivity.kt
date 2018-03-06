@@ -1,33 +1,25 @@
 package martakonik.timeplaner.ui.timeMeasurement
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
-import martakonik.timeplaner.GlobalApplication
 import martakonik.timeplaner.R
-import martakonik.timeplaner.domain.TimeMeasurement
-import martakonik.timeplaner.infrastructure.LocalStorage
-import martakonik.timeplaner.infrastructure.TimeProvider
 import martakonik.timeplaner.ui.history.HistoryActivity
 import martakonik.timeplaner.ui.workHourCalculator.WorkHourCalculatorActivity
+import javax.inject.Inject
 
 
 class TimeMeasurementActivity : AppCompatActivity(), TimeMeasurementView {
-    private lateinit var mPresenterImpl: TimeMeasurementActivityPresenterImpl
-
-    companion object {
-        private const val SAVED_TIME_PREFERENCES = "start"
-    }
+    @Inject
+    lateinit var mPresenterImpl: TimeMeasurementActivityPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val settings = getSharedPreferences(SAVED_TIME_PREFERENCES, Context.MODE_PRIVATE)
-        var databaseIteractor = (this.application as GlobalApplication).databaseIteractor
-        mPresenterImpl = TimeMeasurementActivityPresenterImpl(this,
-                TimeMeasurement(LocalStorage(settings), TimeProvider()), databaseIteractor)
+
         mPresenterImpl.onActivityCreate()
 
         btnStartWorking.setOnClickListener {

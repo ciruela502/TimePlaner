@@ -7,8 +7,9 @@ import martakonik.timeplaner.database.DatabaseIteractor
 import martakonik.timeplaner.models.WorkDayPlain
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class HistoryPresenterImpl(private var historyPresenter: HistoryView,
+class HistoryPresenterImpl @Inject constructor(private var historyPresenter: HistoryView,
                            private var databaseIteractor: DatabaseIteractor,
                            private var adapterModel: AdapterModel) :
         HistoryPresenter {

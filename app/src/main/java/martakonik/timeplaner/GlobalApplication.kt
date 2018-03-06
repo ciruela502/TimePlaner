@@ -1,17 +1,23 @@
 package martakonik.timeplaner
 
+import android.app.Activity
 import android.app.Application
-import martakonik.timeplaner.database.DatabaseIteractor
-import martakonik.timeplaner.database.WorkDayDatabase
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import martakonik.timeplaner.dagger.DaggerGlobalComponent
+import javax.inject.Inject
 
-class GlobalApplication : Application() {
 
-    lateinit var workDayDatabase: WorkDayDatabase
-    lateinit var databaseIteractor: DatabaseIteractor
+class GlobalApplication : Application(), HasActivityInjector {
+    @Inject
+    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
         super.onCreate()
-        workDayDatabase = WorkDayDatabase.create(this)
-        databaseIteractor = DatabaseIteractor(workDayDatabase);
+        DaggerGlobalComponent.builder().create(this).inject(this)
+    }
+
+    override fun activityInjector(): DispatchingAndroidInjector<Activity> {
+        return dispatchingActivityInjector
     }
 }

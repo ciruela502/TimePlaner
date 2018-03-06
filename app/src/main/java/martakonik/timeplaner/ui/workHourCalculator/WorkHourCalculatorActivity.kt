@@ -5,20 +5,26 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.DatePicker
 import android.widget.EditText
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_details.*
 import martakonik.timeplaner.R
 import java.util.*
+import javax.inject.Inject
 
 
 class WorkHourCalculatorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         WorkHourCalculatorView {
 
+    //czy to mozna injectowac?
     private var calendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
-    private lateinit var detailsCalculatorPresenter: WorkHourCalculatorPresenterImpl
+    @Inject
+    lateinit var detailsCalculatorPresenter: WorkHourCalculatorPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+
         detailsCalculatorPresenter = WorkHourCalculatorPresenterImpl(this)
         editTextFrom.setOnClickListener({
             detailsCalculatorPresenter.onEditTextFromClick(editTextFrom)

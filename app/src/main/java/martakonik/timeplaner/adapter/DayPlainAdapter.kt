@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import martakonik.timeplaner.R
 import martakonik.timeplaner.models.WorkDayPlain
+import javax.inject.Inject
 
-class DayPlainAdapter : RecyclerView.Adapter<DayPlainAdapter.DayViewHolder>(),
+class DayPlainAdapter @Inject constructor(): RecyclerView.Adapter<DayPlainAdapter.DayViewHolder>(),
         AdapterModel, AdapterView {
 
     private var mDayList: ArrayList<WorkDayPlain> = ArrayList()

@@ -5,9 +5,10 @@ import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
 import org.threeten.bp.Month
 import org.threeten.bp.format.DateTimeFormatter
+import javax.inject.Inject
 
 
-class MyCalendar {
+class MyCalendar @Inject constructor(){
 
     fun countWorkHours(from: String, to: String, part: String): Double {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")

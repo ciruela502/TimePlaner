@@ -5,8 +5,9 @@ import android.os.Message
 import martakonik.timeplaner.database.DatabaseIteractor
 import martakonik.timeplaner.domain.TimeMeasurement
 import martakonik.timeplaner.models.WorkDayDateTime
+import javax.inject.Inject
 
-class TimeMeasurementActivityPresenterImpl(private var mTimeMeasurementPresenterView: TimeMeasurementView,
+class TimeMeasurementActivityPresenterImpl @Inject constructor(private var mTimeMeasurementPresenterView: TimeMeasurementView,
                                            private val mTimeMeasurement: TimeMeasurement,
                                            private val databaseIteractor: DatabaseIteractor)
     : TimeMeasurementActivityPresenter {

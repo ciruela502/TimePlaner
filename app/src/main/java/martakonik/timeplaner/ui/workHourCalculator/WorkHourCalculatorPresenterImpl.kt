@@ -4,12 +4,14 @@ import android.widget.EditText
 import martakonik.timeplaner.domain.MyCalendar
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class WorkHourCalculatorPresenterImpl(private var interactor: WorkHourCalculatorView) :
+class WorkHourCalculatorPresenterImpl @Inject constructor(var interactor: WorkHourCalculatorView) :
         WorkHourCalculatorPresenter {
 
     private lateinit var editText: EditText
-    private var myCalendar: MyCalendar = MyCalendar()
+    @Inject
+    lateinit var myCalendar: MyCalendar
     private val sdf = SimpleDateFormat("dd/MM/yy", Locale.US)
 
     override fun onDataSetReceived(year: Int, month: Int, day: Int) {

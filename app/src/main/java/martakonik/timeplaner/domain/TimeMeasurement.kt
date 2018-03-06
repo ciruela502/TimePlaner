@@ -3,8 +3,9 @@ package martakonik.timeplaner.domain
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class TimeMeasurement(
+class TimeMeasurement @Inject constructor(
         private val watchStorage: WatchStorage,
         private val timeProvider: TimeProvider
 ) {

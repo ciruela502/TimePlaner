@@ -6,17 +6,21 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.DatePicker
 import android.widget.EditText
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_history.*
 import martakonik.timeplaner.GlobalApplication
 import martakonik.timeplaner.R
 import martakonik.timeplaner.adapter.DayPlainAdapter
+import martakonik.timeplaner.database.DatabaseIteractor
 import java.util.*
+import javax.inject.Inject
 
 class HistoryActivity : AppCompatActivity(), HistoryView,
         DatePickerDialog.OnDateSetListener {
 
     private var mCalendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
-    private lateinit var mHistoryPresenter: HistoryPresenterImpl
+    @Inject
+    lateinit var mHistoryPresenter: HistoryPresenterImpl
     private lateinit var mDayAdapter: DayPlainAdapter
 
     override fun showDatePicker() {
@@ -31,26 +35,25 @@ class HistoryActivity : AppCompatActivity(), HistoryView,
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
-        val databaseIteractor = (this.application as GlobalApplication).databaseIteractor
         recyclerView.layoutManager = LinearLayoutManager(this)
         mDayAdapter = DayPlainAdapter()
         recyclerView.adapter = mDayAdapter
-        mHistoryPresenter = HistoryPresenterImpl(this, databaseIteractor, mDayAdapter)
         mHistoryPresenter.onCreated()
 
 //        val date = LocalDateTime.now()
 //        val workDay = WorkDayDateTime(date.toLocalDate(), date.toLocalTime(), date.plusHours(4).toLocalTime())
 //
-//        var workDayDatabase = (this.application as GlobalApplication).workDayDatabase
+//        var providesWorkDayDatabase = (this.application as GlobalApplication).providesWorkDayDatabase
 //
 //        Single.create<Unit> {
-//            workDayDatabase.getWorkDayDao().insertDay(workDay.convertWorkDayDateTimeToWorkDayPlain(workDay))
+//            providesWorkDayDatabase.getWorkDayDao().insertDay(workDay.convertWorkDayDateTimeToWorkDayPlain(workDay))
 //            it.onSuccess(Unit)
 //        }
 //                .subscribeOn(Schedulers.computation())
-//                .flatMap { workDayDatabase.getWorkDayDao().loadAllDays() }
+//                .flatMap { providesWorkDayDatabase.getWorkDayDao().loadAllDays() }
 //                .doOnSuccess {
 //                    Log.d("raj", "ds")
 //                }
