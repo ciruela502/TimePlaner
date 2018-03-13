@@ -4,11 +4,12 @@ import android.app.Activity
 import android.app.Application
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import martakonik.timeplaner.dagger.DaggerGlobalComponent
+import martakonik.timeplaner.shared.dagger.DaggerGlobalComponent
 import javax.inject.Inject
 
 
 class GlobalApplication : Application(), HasActivityInjector {
+
     @Inject
     lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
 

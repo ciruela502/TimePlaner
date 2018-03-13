@@ -1,10 +1,10 @@
-package martakonik.timeplaner.database
+package martakonik.timeplaner.infrastructure.database
 
-import android.util.Log
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import martakonik.timeplaner.models.WorkDayDateTime
-import martakonik.timeplaner.models.WorkDayPlain
+import martakonik.timeplaner.domain.models.WorkDayDateTime
+import martakonik.timeplaner.domain.models.WorkDayPlain
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -26,17 +26,13 @@ class DatabaseIteractor(var workDayDatabase: WorkDayDatabase) {
     }
 
 
-    fun saveWorkDayToDatabase(workDay: WorkDayDateTime) {
-        Single.create<Unit> {
+    fun saveWorkDayToDatabase(workDay: WorkDayDateTime): Completable {
+        return Single.create<Unit> {
             workDayDatabase.getWorkDayDao().insertDay(workDay.convertWorkDayDateTimeToWorkDayPlain(workDay))
             it.onSuccess(Unit)
         }
                 .subscribeOn(Schedulers.computation())
-                .flatMap { workDayDatabase.getWorkDayDao().loadAllDays() }
-                .doOnSuccess {
-                    Log.d("raj", "ds")
-                }
-                .subscribe()
+                .toCompletable()
 
     }
 

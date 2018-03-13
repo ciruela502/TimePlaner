@@ -1,11 +1,11 @@
-package martakonik.timeplaner.dagger
+package martakonik.timeplaner.shared.dagger
 
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import martakonik.timeplaner.database.DatabaseIteractor
-import martakonik.timeplaner.database.WorkDayDatabase
+import martakonik.timeplaner.infrastructure.database.DatabaseIteractor
+import martakonik.timeplaner.infrastructure.database.WorkDayDatabase
 import javax.inject.Singleton
 
 @Singleton

@@ -6,33 +6,34 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class WorkHourCalculatorPresenterImpl @Inject constructor(var interactor: WorkHourCalculatorView) :
-        WorkHourCalculatorPresenter {
+class WorkHourCalculatorPresenterImpl
+@Inject constructor(
+        var view: WorkHourCalculatorView,
+        var myCalendar: MyCalendar
+) : WorkHourCalculatorPresenter {
 
     private lateinit var editText: EditText
-    @Inject
-    lateinit var myCalendar: MyCalendar
     private val sdf = SimpleDateFormat("dd/MM/yy", Locale.US)
 
     override fun onDataSetReceived(year: Int, month: Int, day: Int) {
         val calendar: Calendar = Calendar.getInstance()
         calendar.set(year, month, day)
         val data = sdf.format(calendar.time)
-        interactor.setText(data, editText)
+        view.setText(data, editText)
     }
 
     override fun onEditTextToClick(editTextTo: EditText) {
         this.editText = editTextTo
-        interactor.showDatePicker()
+        view.showDatePicker()
     }
 
     override fun onEditTextFromClick(editTextFrom: EditText) {
         this.editText = editTextFrom
-        interactor.showDatePicker()
+        view.showDatePicker()
     }
 
     override fun onButtonCountClick(textFrom: String, textTo: String, textPart: String) {
         val countWorkHours = myCalendar.countWorkHours(textFrom, textTo, textPart)
-        interactor.setWorkHours(countWorkHours)
+        view.setWorkHours(countWorkHours)
     }
 }

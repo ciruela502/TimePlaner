@@ -1,4 +1,4 @@
-package martakonik.timeplaner.dagger
+package martakonik.timeplaner.shared.dagger
 
 import dagger.Component
 import dagger.Module
@@ -22,25 +22,5 @@ interface GlobalComponent : AndroidInjector<GlobalApplication> {
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<GlobalApplication>()
 
-}
-
-
-@Module
-internal abstract class ActivityModule {
-    @ContributesAndroidInjector(modules = arrayOf(
-            TimeMeasurementModule::class,
-            TimeMeasurementPresenterModule::class
-    ))
-    internal abstract fun contributeTimeMeasurementActivityInjector(): TimeMeasurementActivity
-
-    @ContributesAndroidInjector(modules = arrayOf(
-            HistoryPresenterModule::class
-    ))
-    internal abstract fun contributeHistoryActivityInjector(): HistoryActivity
-
-    @ContributesAndroidInjector(modules = arrayOf(
-            WorkHourCalculatorModule::class
-    ))
-    internal abstract fun contributeyWorkHourCalculatorActivityInjector(): WorkHourCalculatorActivity
 }
 

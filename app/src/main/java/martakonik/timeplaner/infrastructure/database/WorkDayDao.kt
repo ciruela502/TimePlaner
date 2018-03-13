@@ -1,8 +1,8 @@
-package martakonik.timeplaner.database
+package martakonik.timeplaner.infrastructure.database
 
 import android.arch.persistence.room.*
 import io.reactivex.Single
-import martakonik.timeplaner.models.WorkDayPlain
+import martakonik.timeplaner.domain.models.WorkDayPlain
 
 
 @Dao

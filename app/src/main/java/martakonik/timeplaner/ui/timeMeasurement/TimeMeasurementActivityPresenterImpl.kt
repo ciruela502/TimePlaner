@@ -2,15 +2,19 @@ package martakonik.timeplaner.ui.timeMeasurement
 
 import android.os.Handler
 import android.os.Message
-import martakonik.timeplaner.database.DatabaseIteractor
+import io.reactivex.Completable
 import martakonik.timeplaner.domain.TimeMeasurement
-import martakonik.timeplaner.models.WorkDayDateTime
+import martakonik.timeplaner.domain.models.WorkDayDateTime
+import martakonik.timeplaner.infrastructure.database.DatabaseIteractor
 import javax.inject.Inject
 
-class TimeMeasurementActivityPresenterImpl @Inject constructor(private var mTimeMeasurementPresenterView: TimeMeasurementView,
-                                           private val mTimeMeasurement: TimeMeasurement,
-                                           private val databaseIteractor: DatabaseIteractor)
-    : TimeMeasurementActivityPresenter {
+class TimeMeasurementActivityPresenterImpl
+@Inject constructor(
+        private var mTimeMeasurementPresenterView: TimeMeasurementView,
+        private val mTimeMeasurement: TimeMeasurement,
+        private val databaseIteractor: DatabaseIteractor
+) : TimeMeasurementActivityPresenter {
+
     private lateinit var mHandler: WatchHandler
 
     override fun onActivityCreate() {
@@ -24,18 +28,15 @@ class TimeMeasurementActivityPresenterImpl @Inject constructor(private var mTime
         sendMessageStart()
     }
 
-    override fun onFinishWorkingButtonClick() {
+    override fun onFinishWorkingButtonClick(): Completable {
         sendMessageFinish()
-        var workDayDateTime = WorkDayDateTime(mTimeMeasurement.mWorkDate, mTimeMeasurement.mStartDateTime, mTimeMeasurement.mFinishDateTime)
-        databaseIteractor.saveWorkDayToDatabase(workDayDateTime)
+        var workDayDateTime = WorkDayDateTime(mTimeMeasurement.mWorkDate,
+                mTimeMeasurement.mStartDateTime, mTimeMeasurement.mFinishDateTime)
+        return databaseIteractor.saveWorkDayToDatabase(workDayDateTime)
     }
 
     override fun onStop() {
         mTimeMeasurement.stop()
-    }
-
-    override fun onDetailsButtonClick() {
-
     }
 
     companion object {

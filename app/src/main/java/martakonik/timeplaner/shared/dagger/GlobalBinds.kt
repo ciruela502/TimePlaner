@@ -1,4 +1,4 @@
-package martakonik.timeplaner.dagger
+package martakonik.timeplaner.shared.dagger
 
 import android.content.Context
 import dagger.Binds

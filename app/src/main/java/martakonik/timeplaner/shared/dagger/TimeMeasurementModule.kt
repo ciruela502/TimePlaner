@@ -1,4 +1,4 @@
-package martakonik.timeplaner.dagger
+package martakonik.timeplaner.shared.dagger
 
 import dagger.Binds
 import dagger.Module

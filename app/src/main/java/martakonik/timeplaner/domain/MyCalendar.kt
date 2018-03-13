@@ -8,7 +8,7 @@ import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
 
-class MyCalendar @Inject constructor(){
+class MyCalendar @Inject constructor() {
 
     fun countWorkHours(from: String, to: String, part: String): Double {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")

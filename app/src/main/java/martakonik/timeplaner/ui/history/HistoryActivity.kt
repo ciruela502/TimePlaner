@@ -6,22 +6,28 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.DatePicker
 import android.widget.EditText
+import com.jakewharton.rxbinding2.view.clicks
 import dagger.android.AndroidInjection
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_history.*
-import martakonik.timeplaner.GlobalApplication
 import martakonik.timeplaner.R
-import martakonik.timeplaner.adapter.DayPlainAdapter
-import martakonik.timeplaner.database.DatabaseIteractor
+import martakonik.timeplaner.shared.disposeWith
+import martakonik.timeplaner.ui.history.adapter.AdapterView
+import martakonik.timeplaner.ui.history.adapter.DayPlainAdapter
 import java.util.*
 import javax.inject.Inject
 
 class HistoryActivity : AppCompatActivity(), HistoryView,
         DatePickerDialog.OnDateSetListener {
 
-    private var mCalendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
+    @Inject
+    lateinit var mCalendar: Calendar
     @Inject
     lateinit var mHistoryPresenter: HistoryPresenterImpl
-    private lateinit var mDayAdapter: DayPlainAdapter
+    @Inject
+    lateinit var mDayAdapter: DayPlainAdapter
+    @Inject
+    lateinit var mAdapterView: AdapterView
 
     override fun showDatePicker() {
         val dialog = DatePickerDialog(this, this,
@@ -30,8 +36,10 @@ class HistoryActivity : AppCompatActivity(), HistoryView,
         dialog.show()
     }
 
-    override fun setText(data: String?, editText: EditText) {
-        editText.setText(data)
+    var disposeBag = CompositeDisposable()
+
+    override fun setText(data: String?, editTextId: Int) {
+        findViewById<EditText>(editTextId).setText(data)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,36 +47,19 @@ class HistoryActivity : AppCompatActivity(), HistoryView,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        mDayAdapter = DayPlainAdapter()
         recyclerView.adapter = mDayAdapter
-        mHistoryPresenter.onCreated()
-
-//        val date = LocalDateTime.now()
-//        val workDay = WorkDayDateTime(date.toLocalDate(), date.toLocalTime(), date.plusHours(4).toLocalTime())
-//
-//        var providesWorkDayDatabase = (this.application as GlobalApplication).providesWorkDayDatabase
-//
-//        Single.create<Unit> {
-//            providesWorkDayDatabase.getWorkDayDao().insertDay(workDay.convertWorkDayDateTimeToWorkDayPlain(workDay))
-//            it.onSuccess(Unit)
-//        }
-//                .subscribeOn(Schedulers.computation())
-//                .flatMap { providesWorkDayDatabase.getWorkDayDao().loadAllDays() }
-//                .doOnSuccess {
-//                    Log.d("raj", "ds")
-//                }
-//                .subscribe()
 
         editTextFrom.setOnClickListener({
-            mHistoryPresenter.onEditTextFromClick(editTextFrom)
+            mHistoryPresenter.onEditTextClick(editTextFrom.id)
         })
         editTextTo.setOnClickListener({
-            mHistoryPresenter.onEditTextToClick(editTextTo)
+            mHistoryPresenter.onEditTextClick(editTextTo.id)
         })
-        buttonShowHistory.setOnClickListener({
-            mHistoryPresenter.onShowHistoryButtonClick(editTextFrom.text.toString(),
-                    editTextTo.text.toString())
-        })
+
+        buttonShowHistory.clicks()
+                .flatMapCompletable { mHistoryPresenter.onShowHistoryButtonClick(editTextFrom.text.toString(), editTextTo.text.toString()) }
+                .subscribe()
+                .disposeWith(disposeBag)
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
@@ -76,6 +67,12 @@ class HistoryActivity : AppCompatActivity(), HistoryView,
     }
 
     override fun refreshData() {
-        mDayAdapter.refresh()
+        mAdapterView.refresh()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposeBag.dispose()
     }
 }
+

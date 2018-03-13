@@ -8,6 +8,7 @@ import android.widget.EditText
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_details.*
 import martakonik.timeplaner.R
+import martakonik.timeplaner.domain.MyCalendar
 import java.util.*
 import javax.inject.Inject
 
@@ -15,8 +16,10 @@ import javax.inject.Inject
 class WorkHourCalculatorActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         WorkHourCalculatorView {
 
-    //czy to mozna injectowac?
-    private var calendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
+    @Inject
+    lateinit var calendar: Calendar
+    @Inject
+    lateinit var myCalendar: MyCalendar
     @Inject
     lateinit var detailsCalculatorPresenter: WorkHourCalculatorPresenterImpl
 
@@ -25,7 +28,7 @@ class WorkHourCalculatorActivity : AppCompatActivity(), DatePickerDialog.OnDateS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        detailsCalculatorPresenter = WorkHourCalculatorPresenterImpl(this)
+        detailsCalculatorPresenter = WorkHourCalculatorPresenterImpl(this, myCalendar)
         editTextFrom.setOnClickListener({
             detailsCalculatorPresenter.onEditTextFromClick(editTextFrom)
         })

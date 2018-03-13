@@ -1,4 +1,4 @@
-package martakonik.timeplaner.models
+package martakonik.timeplaner.domain.models
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey

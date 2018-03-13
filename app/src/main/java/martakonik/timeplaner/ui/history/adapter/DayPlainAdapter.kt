@@ -1,4 +1,4 @@
-package martakonik.timeplaner.adapter
+package martakonik.timeplaner.ui.history.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import martakonik.timeplaner.R
-import martakonik.timeplaner.models.WorkDayPlain
+import martakonik.timeplaner.domain.models.WorkDayPlain
 import javax.inject.Inject
 
-class DayPlainAdapter @Inject constructor(): RecyclerView.Adapter<DayPlainAdapter.DayViewHolder>(),
+class DayPlainAdapter @Inject constructor() : RecyclerView.Adapter<DayPlainAdapter.DayViewHolder>(),
         AdapterModel, AdapterView {
 
     private var mDayList: ArrayList<WorkDayPlain> = ArrayList()
@@ -24,10 +24,7 @@ class DayPlainAdapter @Inject constructor(): RecyclerView.Adapter<DayPlainAdapte
     }
 
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
-        val dayPlain = mDayList[position]
-        holder.textData.text = dayPlain.data
-        holder.textStart.text = dayPlain.start
-        holder.textEnd.text = dayPlain.end
+        holder.model = mDayList[position]
     }
 
     override fun refresh() {
@@ -43,5 +40,17 @@ class DayPlainAdapter @Inject constructor(): RecyclerView.Adapter<DayPlainAdapte
         var textData: TextView = itemView.findViewById(R.id.textViewData)
         var textStart: TextView = itemView.findViewById(R.id.textViewTimeStart)
         var textEnd: TextView = itemView.findViewById(R.id.textViewTimeEnd)
+
+        var model: WorkDayPlain? = null
+            set(value) {
+                field = model
+                value?.also {
+                    textData.text = value.data
+                    textStart.text = value.start
+                    textEnd.text = value.end
+                }
+            }
+
+
     }
 }

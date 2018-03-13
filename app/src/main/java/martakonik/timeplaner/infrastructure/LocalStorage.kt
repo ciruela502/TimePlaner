@@ -4,7 +4,8 @@ import android.content.SharedPreferences
 import martakonik.timeplaner.domain.TimeMeasurement
 import javax.inject.Inject
 
-class LocalStorage @Inject constructor(
+class LocalStorage
+@Inject constructor(
         private val sharedPreferences: SharedPreferences
 ) : TimeMeasurement.WatchStorage {
 
